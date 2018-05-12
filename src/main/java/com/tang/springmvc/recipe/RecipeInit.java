@@ -4,18 +4,22 @@ import com.tang.springmvc.recipe.Model.*;
 import com.tang.springmvc.recipe.Repos.CategoryRepos;
 import com.tang.springmvc.recipe.Repos.RecipeRepos;
 import com.tang.springmvc.recipe.Repos.UnitOfMeasureRepos;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationListener;
 import org.springframework.context.event.ContextRefreshedEvent;
 import org.springframework.stereotype.Component;
 
+import javax.transaction.Transactional;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
 
+@Slf4j
 @Component
+@Transactional
 public class RecipeInit implements ApplicationListener<ContextRefreshedEvent> {
 
     private final CategoryRepos categoryRepository;
@@ -31,6 +35,7 @@ public class RecipeInit implements ApplicationListener<ContextRefreshedEvent> {
     @Override
     public void onApplicationEvent(ContextRefreshedEvent contextRefreshedEvent) {
         recipeRepository.saveAll(getRecipes());
+        log.debug("recipe initialization finished");
     }
 
 
