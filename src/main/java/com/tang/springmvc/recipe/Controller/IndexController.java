@@ -9,6 +9,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 
+import java.util.Comparator;
 import java.util.Optional;
 
 @Controller
@@ -22,7 +23,12 @@ public class IndexController {
 
     @GetMapping({"/", "", "/index"})
     public String getIndexPage(Model model) {
-        model.addAttribute("recipes", recipeService.getRecipes());
+        model.addAttribute("recipes", recipeService
+                                        .getRecipes()
+                                        .stream()
+                                        .sorted(Comparator.comparing(r -> r.getId()))
+                                        .toArray()
+        );
         return "index";
     }
 
